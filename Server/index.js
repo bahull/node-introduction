@@ -1,22 +1,21 @@
-const express = require('express'); 
-const bodyParser = require('body-parser');
-const app = express();
-const bookCtrl = require(`./controllers/books_controller`)
-
-app.use(bodyParser.json() );
-app.use(express.static('${__dirname}/../public/build'))
-
-
-const baseURL = "/api/books";
-app.post(baseURL, bookCtrl.create); 
-app.get(baseURL, bookCtrl.read);
-app.put("${baseURL}/:id", bookCtrl.update);
-app.delete("{baseURL}/:id", bookCtrl.delete);
-
-
-
+const express = require('express');
+const { json } = require('body-parser');
 
 const port = 3000;
-app.listen(port, () => {console.log(`Server listening on port ${port}`)});
+
+const app = express();
+
+app.use(json());
+app.use(express.static(`${__dirname}/../public/build`));
+
+const bookCtrl = require('./controllers/books_controller');
+
+app.get('/api/books', bookCtrl.read);
+app.post('/api/books', bookCtrl.create);
+app.put('/api/books/:id', bookCtrl.update);
+app.delete('/api/books/:id', bookCtrl.delete);
 
 
+app.listen(port, () => {
+    console.log(`Listening on port: ${port}`);
+});

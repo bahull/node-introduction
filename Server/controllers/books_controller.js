@@ -1,30 +1,32 @@
 let books = [];
 let id = 0;
+
 module.exports = {
-    create: ( req, res, next ) =>{
+    create(req, res, next) {
         req.body.id = id;
         books.push(req.body);
-        id++;
+        id += 1;
         res.json(books);
     },
-
-    read: ( req, res, next ) => {
-        res.json( books);
+    read(req, res, next) {
+        res.json(books);
     },
-
-    update: ( req, res, next ) => {
+    update: ( req, res ) => {
         const updateID = req.params.id;
         let index = books.findIndex( book => book.id == updateID );
     
-        books[ index ] = {
-          id: books[ index ].id,
-          title: req.body.title || books[ index ].title,
-          author: req.body.author || books[ index ].author
+        books[index] = {
+          id: books[index].id,
+          title: req.body.title || books[index].title,
+          author: req.body.author || books[index].author
         };
-    },
-
-    delete: ( req, res, next ) => {
-        books = books.filter(book => book.id !== req.params.id);
+    
+        res.json(books);
+      },
+    delete(req, res, next) {
+        bookID = books.findIndex(book => book.id == req.params.id);
+        books.splice(bookID, 1);
         res.json(books);
     }
-}
+};
+
